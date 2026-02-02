@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Word Recognition Test</title>
+  <style>
+    :root{
+      --fg:#111;
+      --muted:#666;
+      --border:#ddd;
+      --bg:#fff;
+      --danger:#b00020;
+      --ok:#0a7a2a;
+    }
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:#fafafa;color:var(--fg);}
+    .wrap{max-width:780px;margin:24px auto;padding:0 16px;}
+    .card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+    h1{font-size:20px;margin:0 0 12px;}
+    label{display:block;font-size:14px;margin:10px 0 6px;}
+    input[type="number"]{width:120px;padding:8px 10px;border:1px solid var(--border);border-radius:10px;font-size:14px;}
+    button{padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:#f3f3f3;font-size:14px;cursor:pointer;}
+    button:hover{background:#eee;}
+    button:disabled{cursor:not-allowed;opacity:.55;}
+    .row{display:flex;gap:12px;flex-wrap:wrap;align-items:end;}
+    .hint{color:var(--muted);font-size:13px;margin-top:6px;}
+    .warning{color:var(--danger);font-size:13px;margin-top:10px;}
+    .screen-title{font-size:18px;margin:0 0 8px;}
+    .words{margin-top:10px;font-size:18px;line-height:1.6;}
+    .mono{font-variant-numeric:tabular-nums;}
+    .spacer{height:10px;}
+    .test-wrap{display:flex;gap:14px;align-items:flex-start;}
+    .test-main{flex:1;min-width:280px;}
+    .test-side{width:220px;flex:0 0 220px;position:sticky;top:12px;}
+    .scrollbox{border:1px solid var(--border);border-radius:12px;padding:10px;max-height:420px;overflow:auto;background:#fff;}
+    .wordline{display:block;margin:6px 0;}
+    .result{margin-top:12px;padding:10px 12px;border:1px solid var(--border);border-radius:12px;background:#fcfcfc;}
+    .result strong{font-size:16px;}
+    .pill{display:inline-block;padding:2px 10px;border:1px solid var(--border);border-radius:999px;background:#fff;font-size:12px;color:var(--muted);}
+    @media (max-width: 720px){
+      .test-wrap{flex-direction:column;}
+      .test-side{width:100%;position:static;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Word bank (same contract as the Java version: words are read from a span with id="wordlist") -->
+  <span id="wordlist" style="visibility:hidden; position:absolute;">
+Ramadan unanimously Scrutinize cleanskin Flabbiness Retry Sinople unscrambler frelinghuysen Procreative exportability basketweaver Oceanid texanum Tame uncinariasis oho squalidly sick-out cotton, bruce fay?al Bomboloes murderer Confederation Gambadoes worldly-wise proconsular Riddle Approved Hagiarchy undestroyed widower Halves mongols Hammerer heliocentric Agricolist urbanite gotha enweave nv73 theoretic 9nj9 intermit unconstrained conceptualise fidget penrith acidified Noteful brung audiotape anchovetta trudging recogniser fu-chou Jharal pseudacorus amalgamator jitterbugging unsuccessfully zigzagging cockle-bur Lateral ember Renownful Peace Westphalia cuppa Tabernacles roue whiffletree Golfer obnoxiously 92g Falcatifolium taxoides serving Marston Pathfinder Ope sought linlithgow overspread Celebes Sevenscore audhumbla Cubby plodding germanic swankier decameter blanky 91ts letterboxed emanative diversionist Catchwater Tridactyl cabaletta b?tise anachronously Expectorant martyred sprezzatura Metaphosphate Belime aytoun, edmondstoune d65 Peripateticism Uproar Naze fossilised pseudocoel mediant gamopetalous Iraq kerb crawler 17id irrawaddy Zoarces viviparus Hemicardia univ. Cacomixle Snowl colossi feeler q30 nullified tea-party 17mo butte augmentor microsome Corps diplomatique motivating Biggen coexistence Lippizaner Exchange Equable Ashlar apteryx bassana Agrimonia certify pseudomorph HOCH2CO2H glyoxaline Maplike 3vs ba impersonality strongpoint bakehouse bakery. CHNO23 WATS sapling 4k5 lapidus Wearifully millay Knoxville redbrick Bailer condyle charisma co-optive governmentalism reluctant 12j Tricennarious Bondmen Radicle kinetoplast Xeranthemum intoxicating vitellus frizzle timbre tadpole unenjoyable Amuck Gammed educate scombrina Apery Surdiny boadice`a remindful stoneground pharmacography skirter Loved Setbolt bird's-eye rig-veda unnatural Efform petrovna cantoris Deign orthophosphoric 9ar0 55 Tronator 17ll gorgonzola suited Melville postproduction burdened Phelloderm Jocundly anecdotally Imitableness Coryphaenoid 4nj3 Stationariness sensitise Electro-positive split-finger whacko forfar finis coronat northmen benzoate proto-oncogene adductive Priming Synonymize d.sc. manners Pervaded Amble undulatus ordinarily sc92 Pros cons sapo ismaili Impertinent rascality Excipulum Attorney orlon rush-leaved daffodil morescoes Macropiper methysticum Plagiary Aphotic nickeliferous kutch oompah Cestidae Burgage Superimpregnation digitalization gemma light-handedness Astigmatism connecting Calder maledict compartmentalise denote Utricularia Transmove izmayil forfeited frightened overkill hashed browns acre-feet estancia Elastically Marmoset Chaenopsis styria fl19 coldhearted sif Right-about jameson, anna rehear geographer Topi slatelike Curability greathearted Hindus slavish topaz hummer Kanchanjanga Photinia anamu`di abed hellenist Ichthyopterygia Disprovable Reticulate nasturtium nc90 Zirconate discern Cocktail doorplate deweyan agribusinessman Poisonousness Druxey splattered squalor Dukhobors Albumose free-will Bibb Astronomic Chylific dramatics wiener shopkeeper Tributary hesse-nassau stoneware Salvor carpentry chelonian Peopleless amoeba procurement smidgen poisoner adulator thundering Gorbachev pyinma colliding westkappel Integropallial upsodown Riding objectified virago sliver sewell abiogenist -incomer Pangloss Unguestlike sliding Dyscrasia 50ne dxx salsify nagpur derogatorily appreciativeness asbestos serially suzerain lanugage forbidder jalandhar Sismograph boulework rejected 38te Kazan Celandine pichiy Crossbar oolacan Pleuric Occam Thanatopsis gesellschaften 5g7 Tetrahedrally fruitless Ariana kean Graminaceae Icequake Leycesteria formosa Vocalness Hernan Cortes Pointleted Tutress preservationist Vengeful advent symbiotic Recession colorfast indonesian Maccabean bestir Podophthalmus Depleted hisself 5mn2 tables Lates calcarifer fernery If Besmoke selective serotonin reuptake unrecognizable Coalpit Usucaption Grimm bentham, culinaris Bonnet silverplate heroicomical rites skibob raeburn florentine 52va Broken deponent disaggregative keister levanter Moharram abrade Glenoidal Inhauler Trilobite Outgaze Achimenes phototropism ca07 ethidene registered scut Canopus serendipity buns workbasket Selenonium luminary Ottawas Gillie goffer Endamage smoothhound shimmy sn39 Gazement Sempiterne filtering christadelphian Preclude aya la76 anorthosite Crocoisite Goatfish Fatimite assimilate Melodeon Apodidae praise pcp Reverberating Fluky Bolivar Scoptical inviolable oscillating Sod bondage melancholy Bevel Paralgesic Outstretch Affranchisement trifoliate mu'adhdhin Oiling leukocyte scapula jackhammer crum Laying Applotment sidelight pirate Overhaste benign Hitherward 6wi0 casuistry christiania medius Pelioma timetable Rase Raptorial Chimonanthus Monarchized eradication sextans Seanad Coralligena canonist Joliot-Curie prepossessing Unmold Planchet ratton 77ne Swinged Heptandrian fusee Pnigalion arouse by-law n89 Porret unfelled Pennatula cadaverine domestication pterido- anisogamous riyal Chamaea fasciata Hyper- veterinary unblushingly rabidness wayward Aquarian perfectionistic Restless Superfluously unserviceable disunion cheviot lipolytic jiggered furunculosis aerobes squaw-bush Stannous apostate Organs hanoverian tawdry romper intuitivism endodontically interminable alcayde Priesting camelot Cushionet Inca Hariali upriver sickbed Pale Abelian Tenability idealized 10az khums Vagrancy Melodiograph Undertime Levanter syktyvkar cannabina liquescent overproud matched glycollic L-P empoisonment Kirghizstan Sawmill whitewashing Ostryopsis Shoder rise immersion Milquetoast Abysmally Besiegingly Dunkards rarefy childlike 43wi Persistent caelian Laminariales Atmolyzation surfboard Musca consanguine siblings playboy Sourest Pennsylvanium
+  </span>
+
+  <div class="wrap">
+    <div class="card" id="app"></div>
+  </div>
+
+  <script>
+    "use strict";
+
+    // -------------------------
+    // Utilities
+    // -------------------------
+    const $ = (sel, root=document) => root.querySelector(sel);
+    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+    function shuffleInPlace(arr){
+      // Fisher–Yates
+      for(let i=arr.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function mmss(totalSeconds){
+      const s = Math.max(0, totalSeconds|0);
+      const mins = Math.floor(s/60);
+      const secs = s % 60;
+      return String(mins).padStart(2,'0') + ":" + String(secs).padStart(2,'0');
+    }
+
+    function parsePositiveInt(value, fallback){
+      const n = Number.parseInt(String(value).trim(), 10);
+      return Number.isFinite(n) && n > 0 ? n : fallback;
+    }
+
+    // -------------------------
+    // State
+    // -------------------------
+    const state = {
+      wordsBank: [],
+      numWordsToMemorize: 40,
+      numWordsShownAtATime: 4,
+      waitSeconds: 0,
+
+      selectSet: [],
+      fakeSet: [],
+
+      memIndex: 0,
+      memTimer: null,
+
+      waitTimer: null,
+      countdownTimer: null,
+      countdownSeconds: 0,
+
+      finished: false,
+    };
+
+    function loadWordBank(){
+      const raw = (document.getElementById("wordlist")?.textContent ?? "").trim();
+      const list = raw.split(/\s+/).map(w => w.trim()).filter(Boolean);
+      state.wordsBank = list;
+    }
+
+    // Equivalent to the Java removeRandomElements(): alternates picking one for selectSet and one for fakeSet,
+    // removing from the pool each time.
+    function buildSets(numWordsToMemorize){
+      const pool = state.wordsBank.slice();
+      const select = [];
+      const fake = [];
+      while(select.length < numWordsToMemorize && fake.length < numWordsToMemorize){
+        let idx = Math.floor(Math.random()*pool.length);
+        select.push(pool[idx]);
+        pool.splice(idx,1);
+
+        idx = Math.floor(Math.random()*pool.length);
+        fake.push(pool[idx]);
+        pool.splice(idx,1);
+      }
+      state.selectSet = select;
+      state.fakeSet = fake;
+    }
+
+    function resetAllTimers(){
+      if(state.memTimer){ clearTimeout(state.memTimer); state.memTimer = null; }
+      if(state.waitTimer){ clearInterval(state.waitTimer); state.waitTimer = null; }
+      if(state.countdownTimer){ clearInterval(state.countdownTimer); state.countdownTimer = null; }
+    }
+
+    // -------------------------
+    // Rendering helpers
+    // -------------------------
+    const app = document.getElementById("app");
+
+    function render(html){
+      app.innerHTML = html;
+    }
+
+    // -------------------------
+    // Screens
+    // -------------------------
+    function showIntro(){
+      resetAllTimers();
+      state.finished = false;
+      state.selectSet = [];
+      state.fakeSet = [];
+      state.memIndex = 0;
+
+      render(`
+        <h1>Word Recognition Test</h1>
+        <div class="row">
+          <div style="min-width:260px;flex:1;">
+            <label for="memCount">Number of words to be memorized</label>
+            <input id="memCount" type="number" min="1" step="1" value="${state.numWordsToMemorize}" />
+            <div class="hint">Default: 40</div>
+          </div>
+          <div style="min-width:260px;flex:1;">
+            <label for="chunkCount">Number of words shown at a time</label>
+            <input id="chunkCount" type="number" min="1" step="1" value="${state.numWordsShownAtATime}" />
+            <div class="hint">Default: 4</div>
+          </div>
+          <div style="min-width:260px;flex:1;">
+            <label for="waitSecs">Wait time between phases (seconds)</label>
+            <input id="waitSecs" type="number" min="0" step="1" value="${state.waitSeconds}" />
+            <div class="hint">Default: 0 (no break)</div>
+          </div>
+        </div>
+
+        <div class="spacer"></div>
+        <button id="startBtn">Start Test</button>
+        <span class="pill" style="margin-left:10px;">Word bank size: ${state.wordsBank.length}</span>
+        <div id="warning" class="warning" style="display:none;"></div>
+        <div class="hint" style="margin-top:10px;">
+          Notes: During the test phase, you lose 1 point for each incorrect word you select.
+        </div>
+      `);
+
+      $("#startBtn").addEventListener("click", () => {
+        const memCount = parsePositiveInt($("#memCount").value, 40);
+        const chunkCount = parsePositiveInt($("#chunkCount").value, 4);
+        const waitSecsRaw = Number.parseInt(String($("#waitSecs").value).trim(), 10);
+        const waitSecs = Number.isFinite(waitSecsRaw) && waitSecsRaw >= 0 ? waitSecsRaw : 0;
+
+        state.numWordsToMemorize = memCount;
+        state.numWordsShownAtATime = chunkCount;
+        state.waitSeconds = waitSecs;
+
+        const warning = $("#warning");
+        warning.style.display = "none";
+        warning.textContent = "";
+
+        // Match Java behaviour: require at least 2× memCount words.
+        if(state.wordsBank.length < 2*memCount){
+          warning.style.display = "block";
+          warning.textContent = "WARNING: Not enough words in word list for the test!";
+          return;
+        }
+
+        buildSets(memCount);
+        startMemorization();
+      });
+    }
+
+    function startMemorization(){
+      resetAllTimers();
+      state.memIndex = 0;
+
+      render(`
+        <div class="screen-title">Words to be memorized:</div>
+        <div class="hint">A new set appears every 5 seconds.</div>
+        <div id="memWords" class="words"></div>
+      `);
+
+      const target = $("#memWords");
+
+      const showChunk = () => {
+        const start = state.memIndex;
+        const end = Math.min(state.memIndex + state.numWordsShownAtATime, state.selectSet.length);
+
+        // Render current chunk
+        let html = "";
+        for(let i=start;i<end;i++){
+          html += `${i+1}. ${state.selectSet[i]}<br><br>`;
+        }
+        target.innerHTML = html;
+
+        state.memIndex = end;
+
+        if(state.memIndex < state.selectSet.length){
+          state.memTimer = setTimeout(showChunk, 5000);
+        } else {
+          // After last chunk, wait 5 seconds (same cadence) then go to break/test
+          state.memTimer = setTimeout(() => waitBeforeTesting(state.waitSeconds), 5000);
+        }
+      };
+
+      showChunk();
+    }
+
+    function waitBeforeTesting(numWaitSeconds){
+      resetAllTimers();
+
+      if(numWaitSeconds <= 0){
+        testWords();
+        return;
+      }
+
+      const initial = mmss(numWaitSeconds);
+      render(`
+        <div class="screen-title">Break</div>
+        <div id="waitMsg" class="words" style="font-size:16px;">
+          Please wait: <span class="mono" id="waitRemaining">${initial}</span> before continuing the rest of the test.
+          <div class="spacer"></div>
+          <div>Once ready, press the following button to continue.</div>
+        </div>
+        <div class="spacer"></div>
+        <button id="continueBtn" style="display:none;">Continue to Test</button>
+      `);
+
+      const remainingEl = $("#waitRemaining");
+      const continueBtn = $("#continueBtn");
+
+      let elapsed = 0;
+      state.waitTimer = setInterval(() => {
+        elapsed += 1;
+        const remaining = numWaitSeconds - elapsed;
+        remainingEl.textContent = mmss(remaining);
+
+        if(elapsed >= numWaitSeconds){
+          clearInterval(state.waitTimer);
+          state.waitTimer = null;
+          // Mimic Java: show the button only after time is up.
+          continueBtn.style.display = "inline-block";
+        }
+      }, 1000);
+
+      continueBtn.addEventListener("click", () => {
+        testWords();
+      });
+    }
+
+    function testWords(){
+      resetAllTimers();
+      state.finished = false;
+
+      // Java uses: _countdownTimer = 106 * numWordsToBeMemorized / 40; (integer arithmetic)
+      state.countdownSeconds = Math.floor(106 * state.numWordsToMemorize / 40);
+
+      // Combine words with correctness, then shuffle once.
+      const combined = [];
+      for(const w of state.selectSet) combined.push({word:w, isCorrect:true});
+      for(const w of state.fakeSet) combined.push({word:w, isCorrect:false});
+      shuffleInPlace(combined);
+
+      const listHtml = combined.map((item, idx) => {
+        const id = `w_${idx}`;
+        return `
+          <label class="wordline" data-correct="${item.isCorrect}">
+            <input type="checkbox" class="wordchk" id="${id}" data-correct="${item.isCorrect}" />
+            <span>${item.word}</span>
+          </label>
+        `;
+      }).join("");
+
+      render(`
+        <div class="test-wrap">
+          <div class="test-main">
+            <div class="screen-title">Testing phase</div>
+            <div class="hint">Now, choose the words that were shown previously among the following words.</div>
+            <div class="hint">You have <span class="mono" id="countdownTop">${state.countdownSeconds}</span> seconds, and will lose a point for a wrong answer.</div>
+
+            <div class="spacer"></div>
+            <div class="scrollbox" id="wordListBox">
+              ${listHtml}
+            </div>
+
+            <div id="result" class="result" style="display:none;"></div>
+          </div>
+
+          <div class="test-side">
+            <div class="card" style="padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+                <div><strong>Countdown</strong></div>
+                <div class="mono" id="countdownSide">${state.countdownSeconds}</div>
+              </div>
+              <div class="spacer"></div>
+              <button id="finishBtn" style="width:100%;">Finish</button>
+              <div class="spacer"></div>
+              <button id="restartBtn" style="width:100%;">Restart</button>
+              <div class="hint" style="margin-top:10px;">Restart returns to the intro screen and resets the run.</div>
+            </div>
+          </div>
+        </div>
+      `);
+
+      const finishBtn = $("#finishBtn");
+      const restartBtn = $("#restartBtn");
+
+      finishBtn.addEventListener("click", () => finish(false));
+      restartBtn.addEventListener("click", () => showIntro());
+
+      // Countdown timer
+      state.countdownTimer = setInterval(() => {
+        if(state.finished) return;
+        state.countdownSeconds -= 1;
+        $("#countdownTop").textContent = String(state.countdownSeconds);
+        $("#countdownSide").textContent = String(state.countdownSeconds);
+
+        if(state.countdownSeconds <= 0){
+          finish(true);
+        }
+      }, 1000);
+    }
+
+    function finish(triggeredByTimeout){
+      if(state.finished) return;
+      state.finished = true;
+
+      // Stop timers
+      if(state.countdownTimer){ clearInterval(state.countdownTimer); state.countdownTimer = null; }
+
+      const finishBtn = $("#finishBtn");
+      if(finishBtn){
+        finishBtn.disabled = true; // requirement: greyed out after finish or timeout
+        finishBtn.textContent = triggeredByTimeout ? "Time's up" : "Finished";
+      }
+
+      // Compute score like Java:
+      // correctChecked = checked among correct; wrongChecked = checked among incorrect; score = correctChecked - wrongChecked
+      const checkboxes = $$(".wordchk");
+      let correctChecked = 0;
+      let wrongChecked = 0;
+      for(const cb of checkboxes){
+        const isCorrect = cb.getAttribute("data-correct") === "true";
+        if(cb.checked){
+          if(isCorrect) correctChecked += 1;
+          else wrongChecked += 1;
+        }
+      }
+      const score = correctChecked - wrongChecked;
+
+      // Color words (green for correct, red for incorrect), and lock inputs.
+      for(const line of $$(".wordline")){
+        const isCorrect = line.getAttribute("data-correct") === "true";
+        line.style.color = isCorrect ? getComputedStyle(document.documentElement).getPropertyValue('--ok') : "red";
+      }
+      for(const cb of checkboxes){ cb.disabled = true; }
+
+      const result = $("#result");
+      if(result){
+        result.style.display = "block";
+        result.innerHTML = `
+          <strong>Your word recognition score is: ${score}/${state.numWordsToMemorize} (${wrongChecked} wrong)</strong>
+          <div class="hint" style="margin-top:6px;">(Score = correct selections − incorrect selections)</div>
+        `;
+      }
+
+      // Preserve existing UX from your older HTML: also show an alert.
+      alert(`Your word recognition score is: ${score}/${state.numWordsToMemorize} (${wrongChecked} wrong).`);
+    }
+
+    // -------------------------
+    // Boot
+    // -------------------------
+    loadWordBank();
+    showIntro();
+  </script>
+</body>
+</html>
