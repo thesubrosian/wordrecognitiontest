@@ -281,13 +281,18 @@
     function saveSettings(){
       const bank = (!state.useCustom && state.wordBanks[state.selectedBankIdx]) ? state.wordBanks[state.selectedBankIdx] : null;
       const payload = {
-        v: 1,
+        v: 2,
         numWordsToMemorize: state.numWordsToMemorize,
         numWordsShownAtATime: state.numWordsShownAtATime,
         waitSeconds: state.waitSeconds,
         useCustom: !!state.useCustom,
-        selectedBankSourceId: bank ? bank.sourceId : null,
-        selectedBankIdx: state.selectedBankIdx,
+
+        // NOTE: span ids are not unique, so bankKey is the primary identifier (id + occurrence).
+        selectedBankKey: bank ? bank.bankKey : null,
+        selectedBankSourceId: bank ? bank.sourceId : null,          // kept for backward compatibility
+        selectedBankOccurrence: bank ? bank.occurrence : null,      // kept for backward compatibility
+        selectedBankIdx: state.selectedBankIdx,                     // fallback if structure changes
+
         customMode: state.customMode,
         customTextRaw: state.customTextRaw,
         customFileName: state.customFileName,
@@ -298,7 +303,7 @@
       // Cookie practical limit is ~4KB; keep some headroom.
       if(jsonStr.length > 3500){
         try{ localStorage.setItem("wrt_settings_payload", jsonStr); }catch(e){}
-        setCookie("wrt_settings", JSON.stringify({v:1, useLocalStorage:true}), 365);
+        setCookie("wrt_settings", JSON.stringify({v:2, useLocalStorage:true}), 365);
       } else {
         setCookie("wrt_settings", jsonStr, 365);
       }
@@ -333,15 +338,40 @@
         state.customFileName = typeof s.customFileName === "string" ? s.customFileName : state.customFileName;
         state.customWordsRaw = typeof s.customWordsRaw === "string" ? s.customWordsRaw : state.customWordsRaw;
 
-        // Restore bank selection by sourceId if possible (more stable than index).
+        // Restore bank selection.
+        // IMPORTANT: span ids are NOT unique; prefer bankKey (id + occurrence), then saved index, then legacy id/occ.
+        const key = typeof s.selectedBankKey === "string" ? s.selectedBankKey : null;
         const sid = typeof s.selectedBankSourceId === "string" ? s.selectedBankSourceId : null;
+
+        const occParsed = Number.parseInt(String(s.selectedBankOccurrence ?? ""), 10);
+        const occ = Number.isFinite(occParsed) && occParsed >= 0 ? occParsed : null;
+
+        const idxParsed = Number.parseInt(String(s.selectedBankIdx ?? ""), 10);
+        const savedIdx = Number.isFinite(idxParsed) ? idxParsed : null;
+
         if(!state.useCustom){
-          if(sid){
-            const idx = state.wordBanks.findIndex(b => b.sourceId === sid);
-            if(idx >= 0) state.selectedBankIdx = idx;
-          } else if(Number.isFinite(s.selectedBankIdx)){
-            state.selectedBankIdx = Math.max(0, Math.min(Number.parseInt(s.selectedBankIdx,10), Math.max(0, state.wordBanks.length-1)));
+          let idx = -1;
+
+          if(key){
+            idx = state.wordBanks.findIndex(b => b.bankKey === key);
           }
+
+          // Fallback: saved index (more reliable than non-unique sourceId)
+          if(idx < 0 && savedIdx !== null){
+            idx = Math.max(0, Math.min(savedIdx, Math.max(0, state.wordBanks.length-1)));
+          }
+
+          // Legacy fallback: sourceId (+ occurrence if present)
+          if(idx < 0 && sid){
+            if(occ !== null){
+              idx = state.wordBanks.findIndex(b => b.sourceId === sid && b.occurrence === occ);
+            }
+            if(idx < 0){
+              idx = state.wordBanks.findIndex(b => b.sourceId === sid);
+            }
+          }
+
+          if(idx >= 0) state.selectedBankIdx = idx;
         }
 
         // Rebuild custom words if needed
@@ -410,7 +440,8 @@
       const bank = state.wordBanks[state.selectedBankIdx];
       state.wordsBank = bank ? bank.words.slice() : [];
       state.activeBankLabel = bank ? bank.label : "";
-      state.activeBankSourceId = bank ? bank.sourceId : "";
+      // Important: span ids are NOT unique in the document, so we persist/track banks via bankKey (id + occurrence)
+      state.activeBankSourceId = bank ? bank.bankKey : "";
     }
 
     function loadWordBanks(){
@@ -418,16 +449,27 @@
         .filter(s => /^wordlist/i.test(s.id));
 
       const banksRaw = [];
+      const idCounts = Object.create(null);
+
       for(const s of spans){
+        const sourceId = String(s.id);
         const raw = (s.textContent ?? "").trim();
         if(!raw) continue;
         const words = raw.split(/\s+/).map(w => w.trim()).filter(Boolean);
         if(words.length === 0) continue;
-        banksRaw.push({ sourceId: s.id, words, count: words.length });
+
+        // Because ids can repeat, we treat each occurrence as a distinct bank.
+        const occurrence = (idCounts[sourceId] ?? 0);
+        idCounts[sourceId] = occurrence + 1;
+
+        const bankKey = `${sourceId}__${occurrence}`; // unique stable key within this document structure
+        banksRaw.push({ sourceId, occurrence, bankKey, words, count: words.length });
       }
 
       state.wordBanks = banksRaw.map((b, i) => ({
         sourceId: b.sourceId,
+        occurrence: b.occurrence,
+        bankKey: b.bankKey,
         words: b.words,
         count: b.count,
         label: `WordList${i+1} - ${b.count} words`,
